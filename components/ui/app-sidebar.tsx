@@ -6,36 +6,34 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "Dashboard",
+    url: "/dashboard",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: "Shecduler",
+    url: "/scheduler",
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
+    title: "stuff",
+    url: "/stuff",
     icon: Calendar,
   },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
+
   {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
 ];
@@ -43,6 +41,9 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar variant="inset" collapsible="icon">
+      <SidebarHeader>
+        <Image src="/favicon.ico" width={32} height={32} alt="Logo" />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
