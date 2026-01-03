@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum gender {
+  male
+  female
+  nonBinary
+}
+
+model staff {
+  id           Int         @id @default(autoincrement())
+  full_name    String
+  dob          DateTime?
+  gender       gender
+  phone        String      @unique
+  email        String      @unique
+  address      String?
+  job_title    String
+  nationality  String?
+  is_favourite Boolean     @default(false)
+  is_active    Boolean     @default(true)
+  schedules    schedules[]
+}
+
+model schedules {
+  id          Int      @id @default(autoincrement())
+  client_name String
+  start_time  DateTime
+  end_time    DateTime
+  address     String
+  shift_bonus Int?     @default(0)
+  remarks     String?
+  staff_id    Int
+  staff       staff    @relation(fields: [staff_id], references: [id])
+}
