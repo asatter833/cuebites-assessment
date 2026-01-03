@@ -28,6 +28,7 @@ model staff {
   nationality  String?
   is_favourite Boolean     @default(false)
   is_active    Boolean     @default(true)
+  status       String?     @default("active")
   schedules    schedules[]
 }
 

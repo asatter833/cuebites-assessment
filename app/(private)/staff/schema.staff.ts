@@ -18,6 +18,7 @@ export const createStaffSchema = z.object({
   nationality: z.string().optional(),
   is_favourite: z.boolean().default(false),
   is_active: z.boolean().default(true),
+  status: z.string().default("active"),
 });
 
 export type CreateStaffType = z.infer<typeof createStaffSchema>;
