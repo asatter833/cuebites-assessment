@@ -1,4 +1,5 @@
-import { AppSidebar } from "@/components/ui/app-sidebar";
+import { AppSidebar } from "@/components/custom/app-sidebar";
+import { SidebarInsetContainer } from "@/components/custom/inset-container";
 import {
   SidebarInset,
   SidebarProvider,
@@ -10,10 +11,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <main>
-          <SidebarTrigger className="" />
+        <div className="flex items-center pb-2">
+          <SidebarTrigger className="ml-1" />
+        </div>
+        <SidebarInsetContainer className="overflow-y-auto">
           {children}
-        </main>
+        </SidebarInsetContainer>
       </SidebarInset>
     </SidebarProvider>
   );
