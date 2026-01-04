@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Heart, Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,7 @@ export function FavoriteToggle({
 
         if (typeof result === "string") throw new Error(result);
         if (result && !result.success) throw new Error(result.error);
-      } catch (error) {
+      } catch {
         setOptimisticFavorite(!nextValue);
         toast.error(`Error updating ${staffName || "staff"}`);
       }
