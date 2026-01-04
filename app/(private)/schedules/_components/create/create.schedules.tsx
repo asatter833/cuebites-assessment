@@ -52,12 +52,17 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
     defaultValues: {
       client_name: "",
       address: "",
-      shift_bonus: "",
+      shift_bonus: 0,
       remarks: "",
       // Initialize dates to now or empty strings depending on your schema
     },
   });
-
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen) {
+      form.reset(); // This clears the form whenever the sidebar closes
+    }
+  };
   async function onSubmit(values: CreateScheduleType) {
     setIsPending(true);
     // Ensure dates are sent as proper Date objects if your API expects them
@@ -71,15 +76,14 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
 
     if (result.success) {
       toast.success("Schedule created successfully");
-      form.reset();
-      setOpen(false);
+      handleOpenChange(false);
     } else {
       toast.error(result.error || "Failed to create schedule");
     }
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>
         <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm transition-all">
           <Plus className="mr-2 h-4 w-4" /> Add New Shift
@@ -261,13 +265,16 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
                       <Input
                         type="number"
                         placeholder="0.00"
-                        {...field}
                         className="bg-slate-50/50"
-                        // If value is 0 or empty, show empty string so placeholder is visible
-                        value={field.value === 0 ? "" : field.value ?? ""}
+                        {...field}
+                        // Fix: cast to any to allow the "" check, or use String()
+                        value={
+                          field.value === 0 || !field.value ? "" : field.value
+                        }
                         onChange={(e) => {
                           const val = e.target.value;
-                          // Convert to number for the form state, or keep as "" if cleared
+                          // Send empty string to state so placeholder shows,
+                          // otherwise send the number
                           field.onChange(val === "" ? "" : Number(val));
                         }}
                       />
@@ -317,7 +324,7 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
               <Button
                 type="button"
                 variant="ghost"
-                onClick={() => setOpen(false)}
+                onClick={() => handleOpenChange(false)}
                 className="w-full text-slate-500"
               >
                 Discard

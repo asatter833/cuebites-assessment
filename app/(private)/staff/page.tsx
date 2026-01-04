@@ -16,7 +16,6 @@ export default async function StaffPage({
 
   const view = params.view || "grid-view";
 
-  // FIX 1: Handle the "all" case for status
   const currentStatus = params.status === "all" ? undefined : params.status;
 
   // 1. Fetch data on the server - include the status here!
@@ -25,10 +24,7 @@ export default async function StaffPage({
     status: currentStatus,
     page: Number(params.page) || 1,
   });
-  console.log(meta);
   return (
-    // FIX 2: Adding a key based on params ensures the UI refreshes
-    // when you click the filter tabs
     <div className="mt-4" key={JSON.stringify(params)}>
       {/* 2. Pass data as props */}
       {view === "table-view" ? (
