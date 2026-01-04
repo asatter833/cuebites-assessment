@@ -1,9 +1,31 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { startOfMonth } from "date-fns";
+export interface DashboardStats {
+  value: string;
+  change?: string;
+  trend?: "up" | "down";
+}
 
-export async function getDashboardData() {
+export interface DashboardLog {
+  id: number;
+  name: string;
+  action: string;
+  time: string;
+  type: "info" | "danger" | "success";
+}
+export interface DashboardResponse {
+  success: boolean;
+  error?: string;
+  stats?: {
+    totalStaff: DashboardStats;
+    activeSchedules: DashboardStats;
+    utilization: DashboardStats;
+    pendingTasks: DashboardStats;
+  };
+  recentLogs: DashboardLog[]; // Ensure this is always here or optional
+}
+export async function getDashboardData(): Promise<DashboardResponse> {
   try {
     const now = new Date();
 
@@ -39,29 +61,25 @@ export async function getDashboardData() {
     return {
       success: true,
       stats: {
-        totalStaff: {
-          value: totalStaff.toString(),
-          change: `+${staffThisMonth}`,
-          trend: "up" as const,
-        },
-        activeSchedules: {
-          value: activeSchedules.toString(),
-          change: "Current",
-          trend: "up" as const,
-        },
-        // Change "favorites" to "utilization" here
-        utilization: {
-          value: "82%",
-          change: "-2%",
-          trend: "down" as const,
-        },
-        pendingTasks: {
-          value: "12",
-        },
+        totalStaff: { value: totalStaff.toString(), change: "+2", trend: "up" },
+        activeSchedules: { value: activeSchedules.toString() },
+        utilization: { value: "82%", change: "-2%", trend: "down" },
+        pendingTasks: { value: "12" },
       },
+      recentLogs: latestSchedules.map((s) => ({
+        id: s.id,
+        name: s.staff.full_name,
+        action: `Assigned to ${s.client_name}`,
+        time: "Recently",
+        type: "info",
+      })),
     };
   } catch (error) {
     console.error(error);
-    return { success: false, error: "Database connection failed" };
+    return {
+      success: false,
+      error: "Failed to load",
+      recentLogs: [], // Return empty array to satisfy the type
+    };
   }
 }
