@@ -21,7 +21,6 @@ export default async function StaffPage({
     search: params.search,
     page: Number(params.page) || 1,
   });
-  console.log(data);
   return (
     <div className="mt-4">
       {/* 2. Pass data as props */}

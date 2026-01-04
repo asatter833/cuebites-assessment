@@ -6,6 +6,7 @@ import { Star, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { staff } from "@/generated/prisma/client";
 import { cn } from "@/lib/utils";
+import { DeleteStaffButton } from "../delete.button";
 
 const nationalityToCode: Record<string, string> = {
   american: "us",
@@ -136,14 +137,10 @@ export const columns: ColumnDef<staff>[] = [
               )}
             />
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-            onClick={() => console.log("Delete staff", staffMember.id)}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <DeleteStaffButton
+            id={staffMember.id}
+            staffName={staffMember.full_name}
+          />
         </div>
       );
     },
