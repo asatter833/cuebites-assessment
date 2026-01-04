@@ -52,7 +52,7 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
     defaultValues: {
       client_name: "",
       address: "",
-      shift_bonus: 0,
+      shift_bonus: "",
       remarks: "",
       // Initialize dates to now or empty strings depending on your schema
     },
@@ -63,6 +63,7 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
     // Ensure dates are sent as proper Date objects if your API expects them
     const result = await createSchedule({
       ...values,
+      shift_bonus: Number(values.shift_bonus) || 0,
       start_time: new Date(values.start_time),
       end_time: new Date(values.end_time),
     });
@@ -259,9 +260,16 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
                     <FormControl>
                       <Input
                         type="number"
+                        placeholder="0.00"
                         {...field}
                         className="bg-slate-50/50"
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        // If value is 0 or empty, show empty string so placeholder is visible
+                        value={field.value === 0 ? "" : field.value ?? ""}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          // Convert to number for the form state, or keep as "" if cleared
+                          field.onChange(val === "" ? "" : Number(val));
+                        }}
                       />
                     </FormControl>
                     <FormMessage />

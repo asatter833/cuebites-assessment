@@ -2,7 +2,7 @@ import ListNavComponent from "./_components/nav.component";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className=" flex flex-col">
       <header className="p-2 flex justify-between items-center">
         <ListNavComponent />
       </header>

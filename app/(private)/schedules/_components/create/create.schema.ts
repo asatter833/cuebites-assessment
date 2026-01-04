@@ -10,7 +10,7 @@ export const createScheduleSchema = z
     start_time: z.date({ message: "Start time is required" }),
     end_time: z.date({ message: "End time is required" }),
     address: z.string().min(5, "Service address is required"),
-    shift_bonus: z.number().nonnegative().optional(),
+    shift_bonus: z.union([z.number(), z.string(), z.undefined()]).optional(),
     remarks: z.string().optional().nullable(),
   })
   .refine((data) => data.end_time > data.start_time, {
