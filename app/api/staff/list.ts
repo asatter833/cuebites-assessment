@@ -5,10 +5,12 @@ import { prisma } from "@/lib/prisma";
 export default async function listStaff(filters?: {
   search?: string;
   status?: string;
+  page?: number;
+  pageSize?: number;
 }) {
   try {
-    const { search, status } = filters || {};
-
+    const { search, status, page = 1, pageSize = 10 } = filters || {};
+    const skip = (page - 1) * pageSize;
     const where: Prisma.staffWhereInput = {
       AND: [],
     };
@@ -24,21 +26,32 @@ export default async function listStaff(filters?: {
     if (status) {
       where.status = status;
     }
-
+    const total = await prisma.staff.count({ where });
     const staffList = await prisma.staff.findMany({
       where,
+      skip,
+      take: pageSize,
       orderBy: {
         full_name: "asc",
       },
     });
 
     return {
+      data: staffList,
+      meta: {
+        total,
+        pageCount: Math.ceil(total / pageSize),
+        currentPage: page,
+      },
       message: `${staffList.length} ${
         staffList.length === 1 ? "Staff" : "Staffs"
       } found`,
-      data: staffList,
     };
   } catch {
-    return { message: "Error retrieving staff records", data: [] };
+    return {
+      message: "Error retrieving staff records",
+      data: [],
+      meta: { total: 0, pageCount: 0, currentPage: 1 },
+    };
   }
 }
