@@ -3,7 +3,15 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown, Plus } from "lucide-react";
+import {
+  Check,
+  ChevronsUpDown,
+  Plus,
+  UserPlus,
+  Save,
+  Loader2,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import { cn, nationalities } from "@/lib/utils";
@@ -55,6 +63,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 import {
   createStaffSchema,
@@ -63,8 +72,6 @@ import {
 import createStaff from "@/app/api/staff/create";
 import { gender } from "@/generated/prisma/enums";
 import { useRouter } from "next/navigation";
-
-// Mock list - You can expand this or import from a constants file
 
 export function CreateStaffDialog() {
   const router = useRouter();
@@ -125,13 +132,16 @@ export function CreateStaffDialog() {
     <>
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
-          <Button size="sm" className="gap-2">
+          <Button
+            size="sm"
+            className="gap-2 bg-blue-600 hover:bg-blue-700 shadow-sm"
+          >
             <Plus className="size-4" />
             Add Staff
           </Button>
         </DialogTrigger>
         <DialogContent
-          className="sm:max-w-[480px]"
+          className="sm:max-w-[480px] p-0 overflow-hidden border-none shadow-2xl"
           onPointerDownOutside={(e) => {
             if (isDirty) e.preventDefault();
           }}
@@ -139,48 +149,64 @@ export function CreateStaffDialog() {
             if (isDirty) e.preventDefault();
           }}
         >
-          <DialogHeader>
-            <DialogTitle>Create New Staff</DialogTitle>
-            <DialogDescription>
-              Provide team member details. Fields marked with{" "}
-              <span className="text-destructive">*</span> are required.
+          <DialogHeader className="p-6 pb-4 bg-slate-50 border-b relative">
+            <div className="flex justify-between items-start mb-2">
+              <Badge
+                variant="outline"
+                className="bg-blue-50 text-blue-700 border-blue-200"
+              >
+                Personnel Management
+              </Badge>
+            </div>
+            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
+              <UserPlus className="h-5 w-5 text-blue-600" />
+              Create New Staff
+            </DialogTitle>
+            <DialogDescription className="text-slate-500">
+              Provide team member details to get started.
             </DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Full Name */}
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="p-6 space-y-4"
+            >
               <FormField
                 control={form.control}
                 name="full_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      Full Name<span className="text-destructive"> *</span>
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
+                      Full Name
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <Input
+                        placeholder="John Doe"
+                        {...field}
+                        className="bg-slate-50/50 "
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* Email & Phone */}
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        Email<span className="text-destructive"> *</span>
+                      <FormLabel className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
+                        Email Address
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="john@example.com"
                           {...field}
+                          className="bg-slate-50/50"
                         />
                       </FormControl>
                       <FormMessage />
@@ -192,11 +218,15 @@ export function CreateStaffDialog() {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        Phone<span className="text-destructive"> *</span>
+                      <FormLabel className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
+                        Phone Number
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="+123456789" {...field} />
+                        <Input
+                          placeholder="+1 234..."
+                          {...field}
+                          className="bg-slate-50/50"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -204,18 +234,21 @@ export function CreateStaffDialog() {
                 />
               </div>
 
-              {/* Job Title & Gender */}
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="job_title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        Job Title<span className="text-destructive"> *</span>
+                      <FormLabel className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
+                        Job Title
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="Software Engineer" {...field} />
+                        <Input
+                          placeholder="Software Engineer"
+                          {...field}
+                          className="bg-slate-50/50"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -226,15 +259,15 @@ export function CreateStaffDialog() {
                   name="gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        Gender<span className="text-destructive"> *</span>
+                      <FormLabel className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
+                        Gender
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="bg-slate-50/50 w-full">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
@@ -250,15 +283,14 @@ export function CreateStaffDialog() {
                 />
               </div>
 
-              {/* Nationality (Combobox) & DOB */}
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="nationality"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>
-                        Nationality<span className="text-destructive">*</span>
+                      <FormLabel className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
+                        Nationality
                       </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -267,7 +299,7 @@ export function CreateStaffDialog() {
                               variant="outline"
                               role="combobox"
                               className={cn(
-                                "w-full justify-between font-normal",
+                                "w-full justify-between font-normal bg-slate-50/50",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -275,14 +307,14 @@ export function CreateStaffDialog() {
                                 ? nationalities.find(
                                     (n) => n.value === field.value
                                   )?.label
-                                : "Select a country"}
+                                : "Select country"}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
                         <PopoverContent className="w-[200px] p-0" align="start">
                           <Command>
-                            <CommandInput placeholder="Select a country" />
+                            <CommandInput placeholder="Search country..." />
                             <CommandList>
                               <CommandEmpty>Not found.</CommandEmpty>
                               <CommandGroup>
@@ -321,10 +353,13 @@ export function CreateStaffDialog() {
                   name="dob"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Date of Birth</FormLabel>
+                      <FormLabel className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
+                        Date of Birth
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="date"
+                          className="bg-slate-50/50"
                           {...field}
                           value={
                             field.value instanceof Date
@@ -346,18 +381,20 @@ export function CreateStaffDialog() {
                 />
               </div>
 
-              {/* Address */}
               <FormField
                 control={form.control}
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
+                      Residential Address
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="123 Street, City"
                         {...field}
                         value={field.value ?? ""}
+                        className="bg-slate-50/50"
                       />
                     </FormControl>
                     <FormMessage />
@@ -365,9 +402,26 @@ export function CreateStaffDialog() {
                 )}
               />
 
-              <div className="flex justify-end pt-4">
-                <Button type="submit" disabled={isPending}>
-                  {isPending ? "Creating..." : "Create"}
+              <div className="pt-4 flex flex-col gap-2">
+                <Button
+                  type="submit"
+                  disabled={isPending}
+                  className="w-full bg-blue-600 hover:bg-blue-700 shadow-md"
+                >
+                  {isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <Save className="h-4 w-4 mr-2" />
+                  )}
+                  {isPending ? "Creating..." : "Save Personnel"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full text-slate-500"
+                  onClick={() => handleOpenChange(false)}
+                >
+                  Cancel
                 </Button>
               </div>
             </form>
@@ -375,20 +429,24 @@ export function CreateStaffDialog() {
         </DialogContent>
       </Dialog>
 
-      {/* Confirmation Alert */}
       <AlertDialog open={showExitAlert} onOpenChange={setShowExitAlert}>
         <AlertDialogContent className="max-w-[400px]">
           <AlertDialogHeader>
-            <AlertDialogTitle>Discard changes?</AlertDialogTitle>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <X className="h-5 w-5 text-red-500" />
+              Discard changes?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Unsaved data will be lost.
+              You have unsaved changes. Leaving will result in data loss.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-2">
-            <AlertDialogCancel>Keep Editing</AlertDialogCancel>
+            <AlertDialogCancel className="bg-slate-100">
+              Keep Editing
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmExit}
-              className="bg-red-400 text-destructive-foreground hover:bg-destructive/90"
+              className="bg-red-600 text-white hover:bg-red-700"
             >
               Discard
             </AlertDialogAction>
