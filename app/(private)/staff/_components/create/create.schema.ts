@@ -23,7 +23,7 @@ export const createStaffSchema = z.object({
   email: z.email("Invalid email address"),
   address: z.string().optional().nullable(),
   job_title: z.string().min(1, "Job title is required"),
-  nationality: z.string().optional().nullable(),
+  nationality: z.string().min(1, "Nationality is required"),
   is_favourite: z.boolean(),
   is_active: z.boolean(),
   status: z.string(),

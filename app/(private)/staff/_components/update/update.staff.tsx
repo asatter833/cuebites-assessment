@@ -221,63 +221,104 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                 )}
               />
             </div>
+            <FormField
+              control={form.control}
+              name="nationality"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>
+                    Nationality<span className="text-destructive">*</span>
+                  </FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-between font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? nationalities.find((n) => n.value === field.value)
+                                ?.label
+                            : "Select a country"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search..." />
+                        <CommandList>
+                          <CommandEmpty>Not found.</CommandEmpty>
+                          <CommandGroup>
+                            {nationalities.map((n) => (
+                              <CommandItem
+                                key={n.value}
+                                onSelect={() =>
+                                  form.setValue("nationality", n.value, {
+                                    shouldDirty: true,
+                                  })
+                                }
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    n.value === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {n.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="nationality"
+                name="status"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Nationality</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "w-full justify-between font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value
-                              ? nationalities.find(
-                                  (n) => n.value === field.value
-                                )?.label
-                              : "Select a country"}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[200px] p-0">
-                        <Command>
-                          <CommandInput placeholder="Search..." />
-                          <CommandList>
-                            <CommandEmpty>Not found.</CommandEmpty>
-                            <CommandGroup>
-                              {nationalities.map((n) => (
-                                <CommandItem
-                                  key={n.value}
-                                  onSelect={() =>
-                                    form.setValue("nationality", n.value, {
-                                      shouldDirty: true,
-                                    })
-                                  }
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      n.value === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                  {n.label}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
+                  <FormItem>
+                    <FormLabel>Employment Status</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value ?? "active"}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="active">
+                          <div className="flex items-center gap-2">
+                            <div className="size-2 rounded-full bg-green-500" />
+                            <span>Active</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="inactive">
+                          <div className="flex items-center gap-2">
+                            <div className="size-2 rounded-full bg-slate-400" />
+                            <span>Inactive</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="terminated">
+                          <div className="flex items-center gap-2">
+                            <div className="size-2 rounded-full bg-destructive" />
+                            <span>Terminated</span>
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -308,6 +349,7 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                 )}
               />
             </div>
+
             <FormField
               control={form.control}
               name="address"

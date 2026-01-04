@@ -14,15 +14,22 @@ export default async function StaffPage({
 }) {
   const params = await searchParams;
 
-  const view = params.view || "table-view";
+  const view = params.view || "grid-view";
 
-  // 1. Fetch data on the server
+  // FIX 1: Handle the "all" case for status
+  const currentStatus = params.status === "all" ? undefined : params.status;
+
+  // 1. Fetch data on the server - include the status here!
   const { data, meta } = await listStaff({
     search: params.search,
+    status: currentStatus, // <-- This was missing!
     page: Number(params.page) || 1,
   });
+
   return (
-    <div className="mt-4">
+    // FIX 2: Adding a key based on params ensures the UI refreshes
+    // when you click the filter tabs
+    <div className="mt-4" key={JSON.stringify(params)}>
       {/* 2. Pass data as props */}
       {view === "table-view" ? (
         <ListTable initialData={data} meta={meta} />

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CreateStaffDialog } from "../create/create.staff";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -109,7 +110,17 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <div className="flex flex-col items-center justify-center py-20 gap-4 bg-muted/10">
+                    <div className="text-center space-y-1">
+                      <h3 className="font-semibold text-lg tracking-tight">
+                        No staff members found
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Get started by creating your staff member.
+                      </p>
+                    </div>
+                    <CreateStaffDialog />
+                  </div>
                 </TableCell>
               </TableRow>
             )}

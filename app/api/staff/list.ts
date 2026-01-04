@@ -9,7 +9,7 @@ export default async function listStaff(filters?: {
   pageSize?: number;
 }) {
   try {
-    const { search, status, page = 1, pageSize = 10 } = filters || {};
+    const { search, status, page = 1, pageSize = 12 } = filters || {};
     const skip = (page - 1) * pageSize;
     const where: Prisma.staffWhereInput = {
       AND: [],

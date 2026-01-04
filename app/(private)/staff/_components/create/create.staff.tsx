@@ -62,10 +62,13 @@ import {
 } from "@/app/(private)/staff/_components/create/create.schema";
 import createStaff from "@/app/api/staff/create";
 import { gender } from "@/generated/prisma/enums";
+import { useRouter } from "next/navigation";
 
 // Mock list - You can expand this or import from a constants file
 
 export function CreateStaffDialog() {
+  const router = useRouter();
+
   const [open, setOpen] = React.useState(false);
   const [showExitAlert, setShowExitAlert] = React.useState(false);
   const [isPending, setIsPending] = React.useTransition();
@@ -110,6 +113,7 @@ export function CreateStaffDialog() {
       if (result.success) {
         toast.success("Staff created successfully");
         form.reset();
+        router.refresh();
         setOpen(false);
       } else {
         toast.error(result.error || "Failed to create staff");
@@ -253,7 +257,9 @@ export function CreateStaffDialog() {
                   name="nationality"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Nationality</FormLabel>
+                      <FormLabel>
+                        Nationality<span className="text-destructive">*</span>
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -361,7 +367,7 @@ export function CreateStaffDialog() {
 
               <div className="flex justify-end pt-4">
                 <Button type="submit" disabled={isPending}>
-                  {isPending ? "Creating..." : "Create Staff"}
+                  {isPending ? "Creating..." : "Create"}
                 </Button>
               </div>
             </form>

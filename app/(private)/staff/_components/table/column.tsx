@@ -2,24 +2,11 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { Star, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { staff } from "@/generated/prisma/client";
-import { cn } from "@/lib/utils";
 import { DeleteStaffButton } from "../delete.button";
 import { UpdateStaffDialog } from "../update/update.staff";
 import { FavoriteToggle } from "../favourite.button";
-
-const nationalityToCode: Record<string, string> = {
-  american: "us",
-  bangladesh: "bd",
-  british: "gb",
-  canadian: "ca",
-  french: "fr",
-  german: "de",
-  indian: "in",
-  japanese: "jp",
-};
+import { nationalityToCode } from "@/lib/utils";
 
 export const columns: ColumnDef<staff>[] = [
   {
