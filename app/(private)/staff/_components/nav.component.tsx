@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { LayoutGrid, LayoutList, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { CreateStaffDialog } from "../(create)/create.staff";
 
 function SearchInput({ className, ...props }: React.ComponentProps<"input">) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // 1. Get current values from URL
   const currentSearch = searchParams.get("search") ?? "";
   const currentView = searchParams.get("view") ?? "table-view";
 
@@ -23,10 +23,10 @@ function SearchInput({ className, ...props }: React.ComponentProps<"input">) {
     setValue(currentSearch);
   }, [currentSearch]);
 
-  // 2. Debounced Search Update
+  // Debounced Search Update
   React.useEffect(() => {
     const timeout = setTimeout(() => {
-      if (value === currentSearch) return; // Skip if no change
+      if (value === currentSearch) return;
 
       const params = new URLSearchParams(searchParams.toString());
       if (value) {
@@ -40,7 +40,7 @@ function SearchInput({ className, ...props }: React.ComponentProps<"input">) {
     return () => clearTimeout(timeout);
   }, [value, pathname, router, searchParams, currentSearch]);
 
-  // 3. Optimized View Switcher
+  // Optimized View Switcher
   const handleViewChange = (nextView: string) => {
     // Prevent unselecting (ToggleGroup returns empty string if clicking active item)
     if (!nextView) return;
@@ -51,32 +51,36 @@ function SearchInput({ className, ...props }: React.ComponentProps<"input">) {
   };
 
   return (
-    <div className="flex items-center gap-2 w-full max-w-sm">
-      <div className="relative w-full">
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input
-          {...props}
-          type="search"
-          placeholder="Search..."
-          className={cn("pl-8", className)}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
+    <div className="flex items-center justify-between w-full gap-4">
+      <div className="flex items-center gap-2 flex-1 max-w-sm">
+        <div className="relative w-full">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            {...props}
+            type="search"
+            placeholder="Search staff..."
+            className={cn("pl-8", className)}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        </div>
+
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          value={currentView}
+          onValueChange={handleViewChange}
+        >
+          <ToggleGroupItem value="table-view">
+            <LayoutList className="size-4" />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="card-view">
+            <LayoutGrid className="size-4" />
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
 
-      <ToggleGroup
-        type="single"
-        variant="outline"
-        value={currentView} // Controlled by URL
-        onValueChange={handleViewChange} // Updates URL
-      >
-        <ToggleGroupItem value="table-view" aria-label="Toggle List">
-          <LayoutList className="size-4" />
-        </ToggleGroupItem>
-        <ToggleGroupItem value="card-view" aria-label="Toggle Grid">
-          <LayoutGrid className="size-4" />
-        </ToggleGroupItem>
-      </ToggleGroup>
+      <CreateStaffDialog />
     </div>
   );
 }
