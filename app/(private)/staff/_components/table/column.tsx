@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { staff } from "@/generated/prisma/client";
 import { cn } from "@/lib/utils";
 import { DeleteStaffButton } from "../delete.button";
+import { UpdateStaffDialog } from "../update/update.staff";
+import { FavoriteToggle } from "../favourite.button";
 
 const nationalityToCode: Record<string, string> = {
   american: "us",
@@ -124,23 +126,16 @@ export const columns: ColumnDef<staff>[] = [
       const staffMember = row.original;
       return (
         <div className="flex items-center justify-end gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-muted-foreground hover:text-yellow-500"
-            onClick={() => console.log("Toggle favourite", staffMember.id)}
-          >
-            <Star
-              className={cn(
-                "h-4 w-4",
-                staffMember.is_favourite && "fill-yellow-500 text-yellow-500"
-              )}
-            />
-          </Button>
+          <FavoriteToggle
+            id={staffMember.id}
+            isFavorite={staffMember.is_favourite}
+            staffName={staffMember.full_name}
+          />
           <DeleteStaffButton
             id={staffMember.id}
             staffName={staffMember.full_name}
           />
+          <UpdateStaffDialog staff={staffMember} />
         </div>
       );
     },

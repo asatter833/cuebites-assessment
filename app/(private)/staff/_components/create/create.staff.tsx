@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-import { cn } from "@/lib/utils";
+import { cn, nationalities } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -59,20 +59,11 @@ import {
 import {
   createStaffSchema,
   CreateStaffType,
-} from "@/app/(private)/staff/_components/create/schema.staff";
+} from "@/app/(private)/staff/_components/create/create.schema";
 import createStaff from "@/app/api/staff/create";
 import { gender } from "@/generated/prisma/enums";
 
 // Mock list - You can expand this or import from a constants file
-const nationalities = [
-  { label: "American", value: "american" },
-  { label: "British", value: "british" },
-  { label: "Canadian", value: "canadian" },
-  { label: "French", value: "french" },
-  { label: "German", value: "german" },
-  { label: "Indian", value: "indian" },
-  { label: "Japanese", value: "japanese" },
-].sort((a, b) => a.label.localeCompare(b.label));
 
 export function CreateStaffDialog() {
   const [open, setOpen] = React.useState(false);
@@ -278,14 +269,14 @@ export function CreateStaffDialog() {
                                 ? nationalities.find(
                                     (n) => n.value === field.value
                                   )?.label
-                                : "Search..."}
+                                : "Select a country"}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
                         <PopoverContent className="w-[200px] p-0" align="start">
                           <Command>
-                            <CommandInput placeholder="Search..." />
+                            <CommandInput placeholder="Select a country" />
                             <CommandList>
                               <CommandEmpty>Not found.</CommandEmpty>
                               <CommandGroup>

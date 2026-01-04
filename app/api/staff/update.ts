@@ -1,25 +1,10 @@
 "use server";
 
-import { gender } from "@/generated/prisma/enums";
+import { UpdateStaffType } from "@/app/(private)/staff/_components/update/update.schema";
 import { prisma } from "@/lib/prisma";
 import { handlePrismaError } from "@/lib/prisma-error-handler";
 
-type UpdateStaffPayload = {
-  id: number;
-  full_name?: string;
-  dob?: Date;
-  gender?: gender;
-  phone?: string;
-  email?: string;
-  address?: string;
-  job_title?: string;
-  nationality?: string;
-  is_favourite?: boolean;
-  is_active?: boolean;
-  status?: string;
-};
-
-export default async function updateStaff(params: UpdateStaffPayload) {
+export default async function updateStaff(params: UpdateStaffType) {
   try {
     const staff = await prisma.staff.update({
       where: { id: params.id },

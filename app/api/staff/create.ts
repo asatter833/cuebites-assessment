@@ -1,6 +1,6 @@
 "use server";
 
-import { CreateStaffType } from "@/app/(private)/staff/_components/create/schema.staff";
+import { CreateStaffType } from "@/app/(private)/staff/_components/create/create.schema";
 import { prisma } from "@/lib/prisma";
 import { handlePrismaError } from "@/lib/prisma-error-handler";
 
