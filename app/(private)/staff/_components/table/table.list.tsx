@@ -19,7 +19,7 @@ export default function ListTable({ initialData, meta }: ListTableProps) {
       data={initialData}
       pageCount={meta.pageCount}
       currentPage={meta.currentPage}
-      totalItems={meta.total} // Ensure meta.total is passed here
+      totalItems={meta.total}
     />
   );
 }

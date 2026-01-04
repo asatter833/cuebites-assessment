@@ -135,10 +135,6 @@ export default async function DashboardPage() {
   );
 }
 
-{
-  /* --- Reusable Typed Component --- */
-}
-
 function StatCard({ title, value, change, icon, trend }: StatCardProps) {
   return (
     <Card className="border-slate-200 shadow-sm">

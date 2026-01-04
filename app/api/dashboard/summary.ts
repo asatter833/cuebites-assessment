@@ -79,7 +79,7 @@ export async function getDashboardData(): Promise<DashboardResponse> {
     return {
       success: false,
       error: "Failed to load",
-      recentLogs: [], // Return empty array to satisfy the type
+      recentLogs: [],
     };
   }
 }

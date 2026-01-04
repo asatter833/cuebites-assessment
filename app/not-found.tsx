@@ -38,7 +38,6 @@ export default function NotFound() {
 
         <Separator className="my-8 w-12 bg-slate-200" />
 
-        {/* Actions - Synced with Sidebar Button Style */}
         <div className="w-full flex justify-center">
           <ButtonGroup />
         </div>

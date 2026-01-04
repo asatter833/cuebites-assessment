@@ -3,8 +3,6 @@ import { schedules, staff } from "@/generated/prisma/client";
 import { startOfWeek, format } from "date-fns";
 import listSchedules from "@/app/api/schedules/list";
 import { ResourceScheduler } from "./_components/calendar-view";
-import ScheduleNav from "./_components/schedule-nav";
-import { CreateScheduleSheet } from "./_components/create/create.schedules";
 import { Separator } from "@/components/ui/separator";
 
 // Define the type for the joined data used in the grid

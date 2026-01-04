@@ -58,7 +58,6 @@ export function ResourceScheduler({
   return (
     <TooltipProvider>
       <div className="flex flex-col h-full overflow-hidden bg-white">
-        {/* --- GRID CONTROLS BAR --- */}
         <div className="flex items-center gap-4 px-4 py-2 border-b border-slate-100 bg-slate-50/30">
           {/* Left: Date Display */}
           <div className="flex flex-col min-w-[100px]">

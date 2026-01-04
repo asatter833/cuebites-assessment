@@ -7,9 +7,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export const nationalities = [
   { label: "American", value: "american" },
-  { label: "Australia", value: "australia" },
+  { label: "Australian", value: "australian" },
   { label: "British", value: "british" },
-  { label: "Bangladesh", value: "bangladesh" },
+  { label: "Bangladeshi", value: "bangladeshi" },
   { label: "Canadian", value: "canadian" },
   { label: "French", value: "french" },
   { label: "German", value: "german" },
@@ -19,8 +19,8 @@ export const nationalities = [
 
 export const nationalityToCode: Record<string, string> = {
   american: "us",
-  australia: "au",
-  bangladesh: "bd",
+  australian: "au",
+  bangladeshi: "bd",
   british: "gb",
   canadian: "ca",
   french: "fr",

@@ -45,7 +45,6 @@ export function StaffCard({ staff }: StaffCardProps) {
 
   return (
     <Card className="w-full max-w-md shadow-sm overflow-hidden border-slate-200 hover:shadow-md transition-shadow">
-      {/* Header with Sidebar-style background */}
       <CardHeader className="px-4 bg-slate-50 border-b relative ">
         <div className="flex flex-row items-start justify-between">
           <div className="flex items-center gap-x-3">
@@ -90,7 +89,6 @@ export function StaffCard({ staff }: StaffCardProps) {
       </CardHeader>
 
       <CardContent className="p-4 space-y-4">
-        {/* Contact Quick Info */}
         <div className="flex items-center justify-between text-xs text-slate-500">
           <div className="flex items-center gap-1.5">
             <Mail className="size-3" />
@@ -104,7 +102,6 @@ export function StaffCard({ staff }: StaffCardProps) {
 
         <Separator className="bg-slate-100" />
 
-        {/* Detailed Grid - Using Sidebar Bold Labels */}
         <div className="grid gap-3">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">

@@ -18,7 +18,7 @@ export default async function StaffPage({
 
   const currentStatus = params.status === "all" ? undefined : params.status;
 
-  // 1. Fetch data on the server - include the status here!
+  //Fetch data on the server
   const { data, meta } = await listStaff({
     search: params.search,
     status: currentStatus,
@@ -26,7 +26,7 @@ export default async function StaffPage({
   });
   return (
     <div className="mt-4" key={JSON.stringify(params)}>
-      {/* 2. Pass data as props */}
+      {/*Pass data as props */}
       {view === "table-view" ? (
         <ListTable initialData={data} meta={meta} />
       ) : (

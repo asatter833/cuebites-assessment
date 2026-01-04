@@ -22,7 +22,6 @@ export function TablePagination({
 
   return (
     <div className="flex items-center justify-end py-2 gap-4">
-      {/* Sidebar-style Micro Label */}
       <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
         Page {currentPage} <span className="mx-1 text-slate-300">/</span>{" "}
         {pageCount}

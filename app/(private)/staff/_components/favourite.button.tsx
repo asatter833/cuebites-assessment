@@ -20,7 +20,6 @@ export function FavoriteToggle({
   staffName,
 }: FavoriteToggleProps) {
   const [isPending, startTransition] = React.useTransition();
-  // Optimistic UI state
   const [optimisticFavorite, setOptimisticFavorite] =
     React.useState(isFavorite);
 

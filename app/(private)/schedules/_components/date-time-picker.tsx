@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { CalendarIcon, Clock } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { format, setHours, setMinutes } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -74,7 +73,7 @@ export function DateTimePicker({
             />
           </div>
 
-          {/* COLUMN 2: HOURS (Native Scrolling) */}
+          {/* COLUMN 2: HOURS */}
           <div className="flex flex-col w-[70px] bg-slate-50/50">
             <div className="h-10 flex items-center justify-center border-b bg-white shrink-0">
               <span className="text-[10px] font-bold uppercase text-muted-foreground">
@@ -102,7 +101,7 @@ export function DateTimePicker({
             </div>
           </div>
 
-          {/* COLUMN 3: MINUTES (Native Scrolling) */}
+          {/* COLUMN 3: MINUTES*/}
           <div className="flex flex-col w-[70px] bg-slate-50/50">
             <div className="h-10 flex items-center justify-center border-b bg-white shrink-0">
               <span className="text-[10px] font-bold uppercase text-muted-foreground">

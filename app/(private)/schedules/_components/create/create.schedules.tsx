@@ -54,18 +54,16 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
       address: "",
       shift_bonus: 0,
       remarks: "",
-      // Initialize dates to now or empty strings depending on your schema
     },
   });
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
     if (!newOpen) {
-      form.reset(); // This clears the form whenever the sidebar closes
+      form.reset();
     }
   };
   async function onSubmit(values: CreateScheduleType) {
     setIsPending(true);
-    // Ensure dates are sent as proper Date objects if your API expects them
     const result = await createSchedule({
       ...values,
       shift_bonus: Number(values.shift_bonus) || 0,
@@ -91,7 +89,6 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
       </SheetTrigger>
 
       <SheetContent className="sm:max-w-md p-4 border-l shadow-2xl overflow-y-auto">
-        {/* MATCHED HEADER STYLE */}
         <SheetHeader className="space-y-1 border border-slate-100 rounded-lg bg-slate-50 p-4 mb-6">
           <Badge
             variant="outline"
@@ -267,14 +264,11 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
                         placeholder="0.00"
                         className="bg-slate-50/50"
                         {...field}
-                        // Fix: cast to any to allow the "" check, or use String()
                         value={
                           field.value === 0 || !field.value ? "" : field.value
                         }
                         onChange={(e) => {
                           const val = e.target.value;
-                          // Send empty string to state so placeholder shows,
-                          // otherwise send the number
                           field.onChange(val === "" ? "" : Number(val));
                         }}
                       />
@@ -297,7 +291,6 @@ export function CreateScheduleSheet({ staffList }: CreateScheduleSheetProps) {
                         placeholder="Additional notes for staff..."
                         className="resize-none h-24 bg-slate-50/50"
                         {...field}
-                        // ADD THIS LINE:
                         value={field.value ?? ""}
                       />
                     </FormControl>
