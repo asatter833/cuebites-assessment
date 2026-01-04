@@ -46,6 +46,7 @@ const data = {
         { title: "Settings", url: "/settings", icon: Settings },
       ],
     },
+    //dummy data just to make the sidebar look good
     {
       groupTitle: "Management",
       items: [
@@ -76,23 +77,30 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton
+              asChild
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
               <Link href={"/dashboard"}>
-                {data?.header?.logo ? (
-                  <Image
-                    src={data?.header?.logo}
-                    alt={data?.header?.title}
-                    height={32}
-                    width={32}
-                  />
-                ) : (
-                  <Codesandbox className="size-6!" />
-                )}
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold truncate">
+                {/* Wrap the icon/logo in a fixed-size flex container */}
+                <div className="flex aspect-square size-8 items-center justify-center rounded-sm bg-primary text-primary-foreground shrink-0">
+                  {data?.header?.logo ? (
+                    <Image
+                      src={data?.header?.logo}
+                      alt={data?.header?.title}
+                      height={32}
+                      width={32}
+                    />
+                  ) : (
+                    <Codesandbox className="size-5" />
+                  )}
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">
                     {data?.header?.title}
                   </span>
-                  <span className="text-xs truncate">
+                  <span className="truncate text-xs">
                     {data?.header?.subtitle}
                   </span>
                 </div>
@@ -101,7 +109,6 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-
       <SidebarContent>
         {data.navItems.map((group) => (
           <SidebarGroup key={group.groupTitle}>

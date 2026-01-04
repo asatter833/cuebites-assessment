@@ -8,7 +8,6 @@ export default async function StaffPage({
 }: {
   searchParams: Promise<{ search?: string; view?: string }>;
 }) {
-  // 1. Await the searchParams (Next.js 16 requirement)
   const params = await searchParams;
 
   // 2. Define defaults
