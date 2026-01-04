@@ -59,7 +59,7 @@ import {
 import {
   createStaffSchema,
   CreateStaffType,
-} from "@/app/(private)/staff/schema.staff";
+} from "@/app/(private)/staff/(create)/schema.staff";
 import createStaff from "@/app/api/staff/create";
 import { gender } from "@/generated/prisma/enums";
 
