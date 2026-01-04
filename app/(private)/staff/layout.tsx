@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="p-2 flex justify-between items-center">
         <ListNavComponent />
       </header>
-      <main className="flex-1 p-4">{children}</main>
+      <main className="flex-1 p-2">{children}</main>
     </div>
   );
 }

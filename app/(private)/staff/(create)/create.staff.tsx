@@ -239,7 +239,7 @@ export function CreateStaffDialog() {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                         </FormControl>
