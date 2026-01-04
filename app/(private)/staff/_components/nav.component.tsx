@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { LayoutGrid, LayoutList, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { CreateStaffDialog } from "../(create)/create.staff";
+import { CreateStaffDialog } from "./create/create.staff";
 
 function SearchInput({ className, ...props }: React.ComponentProps<"input">) {
   const router = useRouter();

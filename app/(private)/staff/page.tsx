@@ -1,5 +1,5 @@
 import listStaff from "@/app/api/staff/list";
-import ListGrid from "./_components/grid.list";
+import ListGrid from "./_components/grid/grid.list";
 import ListTable from "./_components/table/table.list";
 
 export default async function StaffPage({
