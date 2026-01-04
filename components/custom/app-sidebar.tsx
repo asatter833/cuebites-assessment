@@ -1,9 +1,9 @@
-import { Calendar, Home, Inbox, Settings } from "lucide-react";
 import Image from "next/image";
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -13,37 +13,93 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
+//icons
+import {
+  Settings,
+  LayoutDashboard,
+  TableProperties,
+  ContactRound,
+  SquareUser,
+  Codesandbox,
+  Users,
+  UserPlus,
+  BadgeDollarSign,
+  BarChart3,
+  Briefcase,
+  LogOut,
+} from "lucide-react";
+import Link from "next/link";
+
 const data = {
   header: {
     title: "Cuebites Digital",
-    logo: "/favicon.ico",
+    subtitle: "crm system",
+    logo: null,
   },
   navItems: [
     {
       groupTitle: "General",
       items: [
-        { title: "Dashboard", url: "/dashboard", icon: Home },
-        { title: "Scheduler", url: "/scheduler", icon: Inbox },
-        { title: "Staff", url: "/staff", icon: Calendar },
+        { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+        { title: "Schedules", url: "/schedules", icon: TableProperties },
+        { title: "Staff", url: "/staff", icon: ContactRound },
         { title: "Settings", url: "/settings", icon: Settings },
       ],
     },
+    {
+      groupTitle: "Management",
+      items: [
+        { title: "Clients", url: "/clients", icon: Users },
+        { title: "Leads", url: "/leads", icon: UserPlus },
+        { title: "Revenue", url: "/revenue", icon: BadgeDollarSign },
+        { title: "Analytics", url: "/analytics", icon: BarChart3 },
+        { title: "Projects", url: "/projects", icon: Briefcase },
+      ],
+    },
   ],
+  footer: {
+    user: {
+      title: "Profile",
+      url: "/profile",
+      icon: SquareUser,
+    },
+    logout: {
+      title: "Logout",
+      icon: LogOut,
+    },
+  },
 };
 
 export function AppSidebar() {
   return (
     <Sidebar variant="inset" collapsible="icon">
-      <SidebarHeader className="flex flex-row items-center gap-2 px-2 py-2">
-        <Image
-          src={data.header.logo}
-          width={32}
-          height={32}
-          alt="Cuebites Digital"
-        />
-        <span className="text-sm font-semibold truncate">
-          {data.header.title}
-        </span>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href={"/dashboard"}>
+                {data?.header?.logo ? (
+                  <Image
+                    src={data?.header?.logo}
+                    alt={data?.header?.title}
+                    height={32}
+                    width={32}
+                  />
+                ) : (
+                  <Codesandbox className="size-6!" />
+                )}
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold truncate">
+                    {data?.header?.title}
+                  </span>
+                  <span className="text-xs truncate">
+                    {data?.header?.subtitle}
+                  </span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent>
@@ -54,11 +110,11 @@ export function AppSidebar() {
               <SidebarMenu>
                 {group.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>
-                        <item.icon className="size-4" />
+                    <SidebarMenuButton size="sm" asChild>
+                      <Link href={item.url}>
+                        <item.icon />
                         <span>{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -67,6 +123,30 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          {/* Profile Item */}
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href={data.footer.user.url}>
+                <data.footer.user.icon />
+                <span>{data.footer.user.title}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
+          {/* Logout Item */}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              // onClick={handleLogout}
+              className="text-red-500 hover:text-red-600 hover:bg-red-50"
+            >
+              <data.footer.logout.icon />
+              <span>{data.footer.logout.title}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

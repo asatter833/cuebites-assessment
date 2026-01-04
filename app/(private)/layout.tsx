@@ -1,5 +1,4 @@
 import { AppSidebar } from "@/components/custom/app-sidebar";
-import { SidebarInsetContainer } from "@/components/custom/inset-container";
 import {
   SidebarInset,
   SidebarProvider,
@@ -14,9 +13,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex items-center pb-2">
           <SidebarTrigger className="ml-1" />
         </div>
-        <SidebarInsetContainer className="overflow-y-auto">
+        <div className="overflow-y-auto flex flex-1 flex-col gap-4 p-4 rounded-tl-xl bg-background">
           {children}
-        </SidebarInsetContainer>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );
