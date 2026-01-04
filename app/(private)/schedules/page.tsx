@@ -5,6 +5,7 @@ import listSchedules from "@/app/api/schedules/list";
 import { ResourceScheduler } from "./_components/calendar-view";
 import ScheduleNav from "./_components/schedule-nav";
 import { CreateScheduleSheet } from "./_components/create/create.schedules";
+import { Separator } from "@/components/ui/separator";
 
 // Define the type for the joined data used in the grid
 export type ScheduleWithStaff = schedules & {
@@ -22,22 +23,17 @@ interface PageProps {
 export default async function SchedulesPage({ searchParams }: PageProps) {
   const params = await searchParams;
 
-  // 1. Handle Date Logic
-  // If no date is provided, default to current week.
-  // weekStartsOn: 1 sets Monday as the first day of the week.
   const referenceDate = params.date ? new Date(params.date) : new Date();
   const weekStart = startOfWeek(referenceDate, { weekStartsOn: 1 });
   const searchQuery = params.query || "";
 
-  // 2. Fetch Data (Parallel for performance)
   const [schedulesRes, allStaff] = await Promise.all([
     listSchedules({
-      pageSize: 500, // Large fetch to cover the grid
+      pageSize: 500,
     }),
     prisma.staff.findMany({
       where: {
         is_active: true,
-        // The search filter:
         ...(searchQuery && {
           full_name: {
             contains: searchQuery,
@@ -51,44 +47,44 @@ export default async function SchedulesPage({ searchParams }: PageProps) {
   const schedulesData = (schedulesRes.data as ScheduleWithStaff[]) || [];
 
   return (
-    <div className="flex flex-col max-h-[92vh] bg-slate-50/50 p-4 gap-4 overflow-hidden">
+    <div className="flex flex-col max-h-full bg-slate-50/50 gap-0 overflow-hidden">
       {/* --- MAIN CALENDAR GRID --- */}
-      <main className="flex-1 min-h-0 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-        <ResourceScheduler
-          schedules={schedulesData}
-          allStaff={allStaff}
-          weekStart={weekStart}
-        />
+      <main className="flex-1 min-h-0 p-4 pt-4">
+        <div className="h-full bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <ResourceScheduler
+            schedules={schedulesData}
+            allStaff={allStaff}
+            weekStart={weekStart}
+          />
+        </div>
       </main>
 
-      {/* --- COMPACT FOOTER --- */}
-      <footer className="px-1 flex justify-between items-center shrink-0">
+      {/* --- COMPACT FOOTER (Sidebar Sync) --- */}
+      <footer className="h-12 border-t border-slate-200 bg-white px-6 flex justify-between items-center shrink-0">
         <div className="flex items-center gap-6">
-          <div className="flex flex-col">
-            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">
-              Total Personnel
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+              Staff:
             </span>
-            <span className="text-xs font-semibold text-slate-600">
-              {allStaff.length} Active Members
+            <span className="text-[11px] font-bold text-slate-600">
+              {allStaff.length} ACTIVE
             </span>
           </div>
-          <div className="h-6 w-px bg-slate-200" />
-          <div className="flex flex-col">
-            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">
-              Shift Density
+          <Separator orientation="vertical" className="h-3 bg-slate-200" />
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+              Assignments:
             </span>
-            <span className="text-xs font-semibold text-slate-600">
-              {schedulesData.length} Assignments this view
+            <span className="text-[11px] font-bold text-slate-600">
+              {schedulesData.length} TOTAL
             </span>
           </div>
         </div>
 
-        <div className="text-right">
-          <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest block">
-            Current System Time
-          </span>
-          <span className="text-xs font-mono font-medium text-slate-600">
-            {format(new Date(), "HH:mm:ss")}
+        <div className="flex items-center gap-2">
+          <div className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">
+            System Live: {format(new Date(), "HH:mm")}
           </span>
         </div>
       </footer>

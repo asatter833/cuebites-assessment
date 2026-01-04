@@ -15,7 +15,7 @@ function SearchInput({ className, ...props }: React.ComponentProps<"input">) {
   const searchParams = useSearchParams();
 
   const currentSearch = searchParams.get("search") ?? "";
-  const currentView = searchParams.get("view") ?? "table-view";
+  const currentView = searchParams.get("view") ?? "card-view";
   const currentStatus = searchParams.get("status") ?? "all"; // Added
 
   const [value, setValue] = React.useState(currentSearch);

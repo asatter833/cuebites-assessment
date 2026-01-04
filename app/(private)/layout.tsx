@@ -47,7 +47,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Content Area */}
         <main className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="min-h-[100vh] flex-1 rounded-xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
+          <div className=" flex-1 rounded-xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
             {children}
           </div>
         </main>
