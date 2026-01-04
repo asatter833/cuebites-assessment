@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, UserRoundX } from "lucide-react";
 import { CreateStaffDialog } from "../create/create.staff";
 
 interface DataTableProps<TData, TValue> {
@@ -62,20 +62,25 @@ export function DataTable<TData, TValue>({
     router.push(`/staff?${params.toString()}`);
   };
 
-  // --- PAGINATION LOGIC UPDATED TO 12 ---
   const pageSize = 12;
   const startRange = data.length > 0 ? (currentPage - 1) * pageSize + 1 : 0;
   const endRange = Math.min(currentPage * pageSize, totalItems);
 
   return (
-    <div className="space-y-2">
-      <div className="rounded-md border bg-card">
+    <div className="space-y-3">
+      <div className="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-slate-50/80">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="hover:bg-transparent border-b border-slate-200"
+              >
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="px-6 py-2 h-10">
+                  <TableHead
+                    key={header.id}
+                    className="px-4 py-3 h-10 text-[10px] font-bold uppercase tracking-widest text-slate-500"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -93,9 +98,13 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="hover:bg-slate-50/50 transition-colors border-b border-slate-100 last:border-0"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-6 py-1">
+                    <TableCell
+                      key={cell.id}
+                      className="px-4 py-2 text-sm font-medium text-slate-700"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -108,15 +117,19 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-72 text-center"
                 >
-                  <div className="flex flex-col items-center justify-center py-20 gap-4 bg-muted/10">
+                  <div className="flex flex-col items-center justify-center gap-4">
+                    <div className="p-4 bg-slate-50 rounded-full">
+                      <UserRoundX className="size-10 text-slate-300" />
+                    </div>
                     <div className="text-center space-y-1">
-                      <h3 className="font-semibold text-lg tracking-tight">
+                      <h3 className="font-bold text-slate-900 tracking-tight">
                         No staff members found
                       </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Get started by creating your staff member.
+                      <p className="text-sm text-slate-500 max-w-xs mx-auto">
+                        Your personnel directory is currently empty. Start by
+                        adding a new team member.
                       </p>
                     </div>
                     <CreateStaffDialog />
@@ -128,40 +141,43 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-between px-2">
-        <div className="flex-1 text-sm text-muted-foreground">
+      {/* Compact Pagination UI */}
+      <div className="flex items-center justify-between px-2 py-1">
+        <div className="flex-1 text-[11px] font-medium text-slate-500 uppercase tracking-tight">
           Showing{" "}
-          <span className="font-medium text-foreground">{startRange}</span> to{" "}
-          <span className="font-medium text-foreground">{endRange}</span> of{" "}
-          <span className="font-medium text-foreground">{totalItems}</span>{" "}
-          staff
+          <span className="text-slate-900 font-bold">
+            {startRange}-{endRange}
+          </span>{" "}
+          of <span className="text-slate-900 font-bold">{totalItems}</span>{" "}
+          personnel
         </div>
 
-        <div className="flex items-center space-x-2 lg:space-x-4">
-          <div className="flex items-center justify-center text-sm font-medium">
-            Page {currentPage} of {pageCount}
+        <div className="flex items-center gap-4">
+          <div className="text-[11px] font-bold text-slate-500 uppercase">
+            Page {currentPage} <span className="mx-1 text-slate-300">/</span>{" "}
+            {pageCount}
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-1">
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8"
+              className="h-7 w-7 border-slate-200 hover:bg-slate-50 text-slate-600"
               onClick={() => handlePageChange(-1)}
               disabled={currentPage <= 1}
             >
-              <ChevronLeft className="h-4 w-4" />
-              <span className="sr-only">Previous page</span>
+              <ChevronLeft className="h-3.5 w-3.5" />
+              <span className="sr-only">Previous</span>
             </Button>
 
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8"
+              className="h-7 w-7 border-slate-200 hover:bg-slate-50 text-slate-600"
               onClick={() => handlePageChange(1)}
               disabled={currentPage >= pageCount}
             >
-              <ChevronRight className="h-4 w-4" />
-              <span className="sr-only">Next page</span>
+              <ChevronRight className="h-3.5 w-3.5" />
+              <span className="sr-only">Next</span>
             </Button>
           </div>
         </div>

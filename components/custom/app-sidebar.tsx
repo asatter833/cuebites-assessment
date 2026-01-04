@@ -1,5 +1,7 @@
-import Image from "next/image";
+"use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +15,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-//icons
 import {
   Settings,
   LayoutDashboard,
@@ -28,12 +29,11 @@ import {
   Briefcase,
   LogOut,
 } from "lucide-react";
-import Link from "next/link";
 
 const data = {
   header: {
     title: "Cuebites Digital",
-    subtitle: "crm system",
+    subtitle: "CRM SYSTEM",
     logo: null,
   },
   navItems: [
@@ -46,7 +46,6 @@ const data = {
         { title: "Settings", url: "/settings", icon: Settings },
       ],
     },
-    //dummy data just to make the sidebar look good
     {
       groupTitle: "Management",
       items: [
@@ -73,34 +72,33 @@ const data = {
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="inset" collapsible="icon">
-      <SidebarHeader>
+    <Sidebar variant="inset" collapsible="icon" className=" border-slate-200">
+      <SidebarHeader className="p-3 border-b border-slate-100 bg-slate-50/50">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="hover:bg-transparent"
             >
-              <Link href={"/dashboard"}>
-                {/* Wrap the icon/logo in a fixed-size flex container */}
-                <div className="flex aspect-square size-8 items-center justify-center rounded-sm bg-primary text-primary-foreground shrink-0">
+              <Link href={"/dashboard"} className="flex gap-3">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-slate-900 text-white shrink-0 shadow-sm">
                   {data?.header?.logo ? (
                     <Image
                       src={data?.header?.logo}
                       alt={data?.header?.title}
-                      height={32}
-                      width={32}
+                      height={20}
+                      width={20}
                     />
                   ) : (
-                    <Codesandbox className="size-5" />
+                    <Codesandbox className="size-4" />
                   )}
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">
+                <div className="grid flex-1 text-left leading-tight">
+                  <span className="truncate text-sm font-bold text-slate-900 uppercase tracking-tight">
                     {data?.header?.title}
                   </span>
-                  <span className="truncate text-xs">
+                  <span className="truncate text-[10px] font-bold text-blue-600 uppercase tracking-widest">
                     {data?.header?.subtitle}
                   </span>
                 </div>
@@ -109,18 +107,27 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+
+      <SidebarContent className="gap-0 py-2">
         {data.navItems.map((group) => (
-          <SidebarGroup key={group.groupTitle}>
-            <SidebarGroupLabel>{group.groupTitle}</SidebarGroupLabel>
+          <SidebarGroup key={group.groupTitle} className="py-2">
+            <SidebarGroupLabel className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">
+              {group.groupTitle}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="gap-0.5 px-2">
                 {group.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton size="sm" asChild>
-                      <Link href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
+                    <SidebarMenuButton
+                      size="sm"
+                      asChild
+                      className="h-8 px-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                    >
+                      <Link href={item.url} className="flex gap-3">
+                        <item.icon className="size-4 shrink-0" />
+                        <span className="text-[13px] font-medium tracking-tight">
+                          {item.title}
+                        </span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -130,26 +137,35 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          {/* Profile Item */}
+
+      <SidebarFooter className="p-2 border-t border-slate-100">
+        <SidebarMenu className="gap-0.5">
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link href={data.footer.user.url}>
-                <data.footer.user.icon />
-                <span>{data.footer.user.title}</span>
+            <SidebarMenuButton
+              asChild
+              size="sm"
+              className="h-8 px-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+            >
+              <Link href={data.footer.user.url} className="flex gap-3">
+                <data.footer.user.icon className="size-4 shrink-0" />
+                <span className="text-[13px] font-medium tracking-tight">
+                  {data.footer.user.title}
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
-          {/* Logout Item */}
           <SidebarMenuItem>
             <SidebarMenuButton
-              // onClick={handleLogout}
-              className="text-red-500 hover:text-red-600 hover:bg-red-50"
+              size="sm"
+              className="h-8 px-3 text-red-500 hover:text-red-600 hover:bg-red-50 transition-colors"
             >
-              <data.footer.logout.icon />
-              <span>{data.footer.logout.title}</span>
+              <div className="flex items-center gap-3">
+                <data.footer.logout.icon className="size-4 shrink-0" />
+                <span className="text-[13px] font-medium tracking-tight">
+                  {data.footer.logout.title}
+                </span>
+              </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

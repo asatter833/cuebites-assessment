@@ -61,14 +61,18 @@ export function FavoriteToggle({
       disabled={isPending}
       onClick={handleToggle}
       className={cn(
-        "h-8 w-8 hover:bg-transparent transition-colors",
-        optimisticFavorite ? "text-red-500" : "text-muted-foreground/40"
+        "h-7 w-7 hover:bg-red-50/50 transition-all duration-300",
+        optimisticFavorite
+          ? "text-red-500"
+          : "text-slate-400 hover:text-red-400"
       )}
     >
       <Heart
         className={cn(
-          "size-5 transition-transform",
-          optimisticFavorite ? "fill-current scale-110" : "fill-none scale-100"
+          "size-4 transition-all duration-300 ease-in-out",
+          optimisticFavorite
+            ? "fill-current scale-110 drop-shadow-[0_0_2px_rgba(239,68,68,0.3)]"
+            : "fill-none scale-100 hover:scale-110"
         )}
       />
       <span className="sr-only">Favorite</span>

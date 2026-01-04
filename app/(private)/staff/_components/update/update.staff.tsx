@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown, Pencil } from "lucide-react";
+import { Check, ChevronsUpDown, Pencil, UserCog } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -50,6 +50,7 @@ import {
 import updateStaff from "@/app/api/staff/update";
 import { gender } from "@/generated/prisma/enums";
 import { updateStaffSchema, UpdateStaffType } from "./update.schema";
+import { Separator } from "@/components/ui/separator";
 
 interface UpdateStaffDialogProps {
   staff: {
@@ -109,53 +110,71 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 text-muted-foreground"
+          className="h-7 w-7 text-slate-500 hover:text-slate-900 hover:bg-slate-100"
         >
-          <Pencil className="size-4" />
+          <Pencil className="size-3.5" />
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="sm:max-w-[480px]"
+        className="sm:max-w-[460px] p-0 overflow-hidden border-slate-200 shadow-lg"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        <DialogHeader>
-          <DialogTitle>Update Staff Member</DialogTitle>
-          <DialogDescription>
-            Modify details for {staff.full_name}.
+        <DialogHeader className="p-4 bg-slate-50/80 border-b border-slate-200 space-y-1">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-white rounded-md border border-slate-200 shadow-sm">
+              <UserCog className="size-4 text-blue-600" />
+            </div>
+            <DialogTitle className="text-base font-bold text-slate-900">
+              Update Staff Member
+            </DialogTitle>
+          </div>
+          <DialogDescription className="text-xs text-slate-500 font-medium">
+            Modify the profile and employment details for {staff.full_name}.
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="p-5 space-y-4"
+          >
             <FormField
               control={form.control}
               name="full_name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Full Name<span className="text-destructive">*</span>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                    Full Name<span className="text-destructive ml-0.5">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      className="h-9 focus-visible:ring-blue-500"
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Email<span className="text-destructive">*</span>
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      Email Address
+                      <span className="text-destructive ml-0.5">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input type="email" {...field} />
+                      <Input
+                        type="email"
+                        {...field}
+                        className="h-9 focus-visible:ring-blue-500"
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-[10px]" />
                   </FormItem>
                 )}
               />
@@ -163,31 +182,42 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                 control={form.control}
                 name="phone"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Phone<span className="text-destructive">*</span>
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      Phone Number
+                      <span className="text-destructive ml-0.5">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input
+                        {...field}
+                        className="h-9 focus-visible:ring-blue-500"
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-[10px]" />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+
+            <Separator className="bg-slate-100 my-2" />
+
+            <div className="grid grid-cols-2 gap-3">
               <FormField
                 control={form.control}
                 name="job_title"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Job Title<span className="text-destructive">*</span>
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      Job Title
+                      <span className="text-destructive ml-0.5">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input
+                        {...field}
+                        className="h-9 focus-visible:ring-blue-500"
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-[10px]" />
                   </FormItem>
                 )}
               />
@@ -195,16 +225,16 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                 control={form.control}
                 name="gender"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Gender<span className="text-destructive">*</span>
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      Gender<span className="text-destructive ml-0.5">*</span>
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="h-9 focus:ring-blue-500 w-full">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                       </FormControl>
@@ -216,18 +246,75 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormMessage />
+                    <FormMessage className="text-[10px]" />
                   </FormItem>
                 )}
               />
             </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      Employment Status
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value ?? "active"}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-9 focus:ring-blue-500 w-full">
+                          <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
+                        <SelectItem value="terminated">Terminated</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="dob"
+                render={({ field }) => (
+                  <FormItem className="space-y-1.5">
+                    <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      Date of Birth
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="date"
+                        className="h-9 focus:ring-blue-500"
+                        value={
+                          field.value instanceof Date
+                            ? field.value.toISOString().split("T")[0]
+                            : ""
+                        }
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value ? new Date(e.target.value) : null
+                          )
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
               name="nationality"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>
-                    Nationality<span className="text-destructive">*</span>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                    Nationality
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -235,7 +322,7 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                         <Button
                           variant="outline"
                           className={cn(
-                            "w-full justify-between font-normal",
+                            "w-full justify-between h-9 font-normal text-sm",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -247,11 +334,14 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
+                    <PopoverContent className="w-[240px] p-0" align="start">
                       <Command>
-                        <CommandInput placeholder="Search..." />
-                        <CommandList>
-                          <CommandEmpty>Not found.</CommandEmpty>
+                        <CommandInput
+                          placeholder="Search countries..."
+                          className="h-8"
+                        />
+                        <CommandList className="max-h-[200px]">
+                          <CommandEmpty>No country found.</CommandEmpty>
                           <CommandGroup>
                             {nationalities.map((n) => (
                               <CommandItem
@@ -278,99 +368,27 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Employment Status</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value ?? "active"}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="active">
-                          <div className="flex items-center gap-2">
-                            <div className="size-2 rounded-full bg-green-500" />
-                            <span>Active</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="inactive">
-                          <div className="flex items-center gap-2">
-                            <div className="size-2 rounded-full bg-slate-400" />
-                            <span>Inactive</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="terminated">
-                          <div className="flex items-center gap-2">
-                            <div className="size-2 rounded-full bg-destructive" />
-                            <span>Terminated</span>
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="dob"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date of Birth</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        value={
-                          field.value instanceof Date
-                            ? field.value.toISOString().split("T")[0]
-                            : ""
-                        }
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value ? new Date(e.target.value) : null
-                          )
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="123 Street, City"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="flex justify-end pt-4">
-              <Button type="submit" disabled={isPending}>
-                {isPending ? "Updating..." : "Update"}
+            <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setOpen(false)}
+                className="h-8 text-xs font-semibold"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                disabled={isPending}
+                className="h-8 text-xs font-semibold bg-blue-600 hover:bg-blue-700"
+              >
+                {isPending ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </form>

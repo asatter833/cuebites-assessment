@@ -29,6 +29,7 @@ model staff {
   is_favourite Boolean     @default(false)
   is_active    Boolean     @default(true)
   status       String?     @default("active")
+  createdAt    DateTime    @default(now())
   schedules    schedules[]
 }
 
@@ -41,5 +42,6 @@ model schedules {
   shift_bonus Int?     @default(0)
   remarks     String?
   staff_id    Int
+  createdAt   DateTime @default(now())
   staff       staff    @relation(fields: [staff_id], references: [id])
 }

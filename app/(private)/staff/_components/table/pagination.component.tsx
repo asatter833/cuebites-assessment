@@ -21,28 +21,36 @@ export function TablePagination({
   };
 
   return (
-    <div className="flex items-center justify-end space-x-2 py-4">
-      <div className="text-sm text-muted-foreground mr-4">
-        Page {currentPage} of {pageCount}
+    <div className="flex items-center justify-end py-2 gap-4">
+      {/* Sidebar-style Micro Label */}
+      <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+        Page {currentPage} <span className="mx-1 text-slate-300">/</span>{" "}
+        {pageCount}
       </div>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => router.push(createPageUrl(currentPage - 1))}
-        disabled={currentPage <= 1}
-      >
-        <ChevronLeft className="h-4 w-4" />
-        Previous
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => router.push(createPageUrl(currentPage + 1))}
-        disabled={currentPage >= pageCount}
-      >
-        Next
-        <ChevronRight className="h-4 w-4" />
-      </Button>
+
+      <div className="flex items-center gap-1.5">
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 px-3 text-[11px] font-semibold border-slate-200 hover:bg-slate-50 text-slate-600 gap-1"
+          onClick={() => router.push(createPageUrl(currentPage - 1))}
+          disabled={currentPage <= 1}
+        >
+          <ChevronLeft className="h-3.5 w-3.5" />
+          Previous
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 px-3 text-[11px] font-semibold border-slate-200 hover:bg-slate-50 text-slate-600 gap-1"
+          onClick={() => router.push(createPageUrl(currentPage + 1))}
+          disabled={currentPage >= pageCount}
+        >
+          Next
+          <ChevronRight className="h-3.5 w-3.5" />
+        </Button>
+      </div>
     </div>
   );
 }
