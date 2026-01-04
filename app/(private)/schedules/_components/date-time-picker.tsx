@@ -62,12 +62,8 @@ export function DateTimePicker({
         </Button>
       </PopoverTrigger>
 
-      {/* FIX 1: We use a fixed width [420px] to accommodate Calendar (approx 280px) + Hours (70px) + Minutes (70px).
-        FIX 2: pointer-events-auto ensures the popover doesn't close prematurely.
-      */}
       <PopoverContent className="w-[420px] p-0 overflow-hidden" align="start">
         <div className="flex h-[300px] divide-x divide-border">
-          {/* COLUMN 1: CALENDAR (Fixed width) */}
           <div className="flex-1 min-w-[280px]">
             <Calendar
               mode="single"
@@ -85,9 +81,7 @@ export function DateTimePicker({
                 Hrs
               </span>
             </div>
-            {/* FIX 3: We use a standard div with overflow-y-auto instead of ScrollArea.
-               This is much more stable in nested popovers. 
-            */}
+
             <div className="flex-1 overflow-y-auto p-1 space-y-1">
               {hours.map((h) => {
                 const isSelected = value?.getHours() === h;

@@ -26,7 +26,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   pageCount: number;
   currentPage: number;
-  totalItems: number; // Added to track total records
+  totalItems: number;
 }
 
 export function DataTable<TData, TValue>({
@@ -62,8 +62,8 @@ export function DataTable<TData, TValue>({
     router.push(`/staff?${params.toString()}`);
   };
 
-  // Logic to calculate showing range (e.g., Showing 1-10 of 50)
-  const pageSize = 10; // This should match your server-side limit
+  // --- PAGINATION LOGIC UPDATED TO 12 ---
+  const pageSize = 12;
   const startRange = data.length > 0 ? (currentPage - 1) * pageSize + 1 : 0;
   const endRange = Math.min(currentPage * pageSize, totalItems);
 
@@ -129,7 +129,6 @@ export function DataTable<TData, TValue>({
       </div>
 
       <div className="flex items-center justify-between px-2">
-        {/* Updated section: Showing 1-10 of 50 staff */}
         <div className="flex-1 text-sm text-muted-foreground">
           Showing{" "}
           <span className="font-medium text-foreground">{startRange}</span> to{" "}

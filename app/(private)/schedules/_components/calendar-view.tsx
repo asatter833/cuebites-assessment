@@ -1,18 +1,36 @@
 "use client";
 
 import React from "react";
-import { format, addDays, isSameDay, areIntervalsOverlapping } from "date-fns";
+import Link from "next/link";
+import {
+  format,
+  addDays,
+  subDays,
+  isSameDay,
+  areIntervalsOverlapping,
+} from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ScheduleWithStaff } from "../page";
 import { staff } from "@/generated/prisma/client";
-import { Clock, MapPin, AlertTriangle } from "lucide-react";
+import {
+  Clock,
+  MapPin,
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
+  Calendar as CalendarIcon,
+} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { CreateScheduleSheet } from "./create/create.schedules";
+import ScheduleNav from "./schedule-nav";
+import { ScheduleDetailsSidebar } from "./schedule-details-sidebar";
 
 interface ResourceSchedulerProps {
   schedules: ScheduleWithStaff[];
@@ -25,17 +43,62 @@ export function ResourceScheduler({
   allStaff,
   weekStart,
 }: ResourceSchedulerProps) {
-  // Generate the 7 days of the week based on the navigation start date
+  const [selectedShift, setSelectedShift] =
+    React.useState<ScheduleWithStaff | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
+  const handleShiftClick = (shift: ScheduleWithStaff) => {
+    setSelectedShift(shift);
+    setIsSidebarOpen(true);
+  };
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+  const prevWeek = format(subDays(weekStart, 7), "yyyy-MM-dd");
+  const nextWeek = format(addDays(weekStart, 7), "yyyy-MM-dd");
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col h-full overflow-hidden border rounded-xl bg-white shadow-sm">
-        {/* --- GRID HEADER --- */}
-        <div className="grid grid-cols-[280px_1fr] border-b bg-slate-50/80 sticky top-0 z-30">
-          <div className="p-4 border-r flex items-center justify-between bg-slate-50">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
-              Team Members
+      <div className="flex flex-col h-full overflow-hidden border rounded-md bg-white">
+        {/* --- COMPACT MAIN HEADER --- */}
+        <header className="flex w-full items-center justify-between px-4 py-2 bg-white border-b shadow-sm sticky top-0 z-40">
+          <div className="flex flex-1 max-w-1/2 items-center justify-between gap-2">
+            <div>
+              <h1 className="text-lg font-bold text-slate-800 tracking-tight leading-none">
+                Scheduler
+              </h1>
+              <p className="text-[10px] font-medium text-blue-600 uppercase tracking-wider mt-1">
+                {format(weekStart, "MMMM yyyy")}
+              </p>
+            </div>
+            <ScheduleNav />
+            <div className="flex w-fit items-center border rounded-md bg-slate-50 p-0.5">
+              <Button variant="ghost" size="icon" asChild className="h-7 w-7">
+                <Link href={`/schedules?date=${prevWeek}`}>
+                  <ChevronLeft className="h-4 w-4" />
+                </Link>
+              </Button>
+              <div className="px-3 py-0.5 flex items-center gap-2 text-xs font-semibold border-x mx-0.5">
+                <CalendarIcon className="h-3 w-3 text-slate-400" />
+                <span className="min-w-full">
+                  {format(weekStart, "dd MMM")} -{" "}
+                  {format(addDays(weekStart, 6), "dd MMM")}
+                </span>
+              </div>
+              <Button variant="ghost" size="icon" asChild className="h-7 w-7">
+                <Link href={`/schedules?date=${nextWeek}`}>
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          <CreateScheduleSheet staffList={allStaff} />
+        </header>
+
+        {/* --- COMPACT GRID HEADER --- */}
+        <div className="grid grid-cols-[220px_1fr] border-b bg-slate-50/90 sticky top-[53px] z-30 backdrop-blur-sm">
+          <div className="p-3 border-r flex items-center bg-slate-50 sticky left-0 z-10">
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+              Team
             </span>
           </div>
           <div className="grid grid-cols-7 divide-x border-slate-200">
@@ -43,16 +106,16 @@ export function ResourceScheduler({
               <div
                 key={day.toISOString()}
                 className={cn(
-                  "p-3 text-center transition-colors",
+                  "p-2 text-center transition-colors",
                   isSameDay(day, new Date()) ? "bg-blue-50/50" : ""
                 )}
               >
-                <p className="text-[10px] font-bold text-slate-400 uppercase">
+                <p className="text-[9px] font-bold text-slate-400 uppercase leading-none">
                   {format(day, "EEE")}
                 </p>
                 <p
                   className={cn(
-                    "text-sm font-black",
+                    "text-xs font-bold mt-1",
                     isSameDay(day, new Date())
                       ? "text-blue-600"
                       : "text-slate-700"
@@ -70,30 +133,31 @@ export function ResourceScheduler({
           {allStaff.map((member) => (
             <div
               key={member.id}
-              className="grid grid-cols-[280px_1fr] min-h-[120px] group transition-colors"
+              className="grid grid-cols-[220px_1fr] min-h-[60px] group transition-colors"
             >
-              {/* Staff Sidebar (Sticky) */}
-              <div className="p-4 border-r flex items-center gap-3 sticky left-0 bg-white group-hover:bg-slate-50/80 z-20 transition-colors">
-                <Avatar className="h-10 w-10 border-2 border-white shadow-sm">
+              {/* Compact Staff Sidebar */}
+              <div className="px-3 py-2 border-r flex items-center gap-2 sticky left-0 bg-white group-hover:bg-slate-50/80 z-20 transition-colors">
+                <Avatar className="h-7 w-7 border shadow-sm shrink-0">
                   <AvatarImage
-                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${member.full_name}`}
+                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(
+                      member.full_name
+                    )}`}
                   />
                   <AvatarFallback>{member.full_name[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col min-w-0">
-                  <span className="text-sm font-bold text-slate-700 truncate">
+                  <span className="text-xs font-bold text-slate-700 truncate leading-tight">
                     {member.full_name}
                   </span>
-                  <span className="text-[10px] text-slate-400 font-medium uppercase tracking-tight truncate">
+                  <span className="text-[9px] text-slate-400 font-medium uppercase truncate">
                     {member.job_title}
                   </span>
                 </div>
               </div>
 
-              {/* Day Cells */}
-              <div className="grid grid-cols-7 divide-x divide-slate-100">
+              {/* Compact Day Cells */}
+              <div className="grid grid-cols-7 divide-x divide-slate-100 bg-white">
                 {weekDays.map((day) => {
-                  // Filter and Sort shifts for this person on this day
                   const dayShifts = schedules
                     .filter(
                       (s) =>
@@ -109,10 +173,9 @@ export function ResourceScheduler({
                   return (
                     <div
                       key={day.toISOString()}
-                      className="p-2 space-y-2 bg-slate-50/10 hover:bg-slate-50/40 transition-colors min-h-[120px]"
+                      className="p-1 space-y-1 hover:bg-slate-50/40 transition-colors min-h-[60px]"
                     >
                       {dayShifts.map((shift, idx) => {
-                        // Conflict Detection: Check if this shift overlaps with the previous one
                         const hasConflict =
                           idx > 0 &&
                           areIntervalsOverlapping(
@@ -130,49 +193,38 @@ export function ResourceScheduler({
                           <Tooltip key={shift.id}>
                             <TooltipTrigger asChild>
                               <div
+                                onClick={() => handleShiftClick(shift)}
                                 className={cn(
-                                  "p-2 rounded-md border shadow-sm transition-all cursor-pointer relative",
-                                  "border-l-[4px]",
+                                  "p-1.5 rounded border shadow-sm transition-all cursor-pointer relative border-l-4 cursor-pointer",
                                   hasConflict
                                     ? "bg-red-50 border-red-500 border-l-red-600 animate-pulse"
-                                    : "bg-white border-slate-200 border-l-blue-500 hover:border-blue-400 hover:shadow-md"
+                                    : "bg-white border-slate-200 border-l-blue-500 hover:border-blue-400"
                                 )}
                               >
                                 {hasConflict && (
-                                  <AlertTriangle className="absolute top-1 right-1 h-3 w-3 text-red-600" />
+                                  <AlertTriangle className="absolute top-0.5 right-0.5 h-2.5 w-2.5 text-red-600" />
                                 )}
-
-                                <div className="font-bold text-[11px] text-slate-800 truncate mb-1">
+                                <div className="font-bold text-[10px] text-slate-800 truncate leading-tight">
                                   {shift.client_name}
                                 </div>
-
-                                <div className="flex items-center gap-1 text-[9px] text-slate-500 font-medium">
-                                  <Clock className="h-2.5 w-2.5 text-blue-400" />
-                                  {format(new Date(shift.start_time), "h:mm a")}{" "}
-                                  - {format(new Date(shift.end_time), "h:mm a")}
-                                </div>
-
-                                <div className="flex items-center gap-1 text-[9px] text-slate-400 truncate mt-1">
-                                  <MapPin className="h-2.5 w-2.5 shrink-0" />
-                                  <span className="truncate">
-                                    {shift.address}
+                                <div className="flex items-center gap-1 text-[8px] text-slate-500 font-medium mt-0.5">
+                                  <Clock className="h-2 w-2 text-blue-400" />
+                                  <span>
+                                    {format(
+                                      new Date(shift.start_time),
+                                      "HH:mm"
+                                    )}{" "}
+                                    -{" "}
+                                    {format(new Date(shift.end_time), "HH:mm")}
                                   </span>
                                 </div>
                               </div>
                             </TooltipTrigger>
-                            <TooltipContent
-                              side="right"
-                              className="max-w-[200px]"
-                            >
+                            <TooltipContent side="top" className="text-xs p-2">
                               <p className="font-bold">{shift.client_name}</p>
-                              <p className="text-xs text-muted-foreground">
+                              <p className="text-muted-foreground">
                                 {shift.address}
                               </p>
-                              {shift.remarks && (
-                                <p className="text-[10px] italic mt-1 border-t pt-1">
-                                  {shift.remarks}
-                                </p>
-                              )}
                             </TooltipContent>
                           </Tooltip>
                         );
@@ -184,6 +236,11 @@ export function ResourceScheduler({
             </div>
           ))}
         </div>
+        <ScheduleDetailsSidebar
+          shift={selectedShift}
+          open={isSidebarOpen}
+          onOpenChange={setIsSidebarOpen}
+        />
       </div>
     </TooltipProvider>
   );

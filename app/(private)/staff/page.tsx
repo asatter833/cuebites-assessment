@@ -22,10 +22,10 @@ export default async function StaffPage({
   // 1. Fetch data on the server - include the status here!
   const { data, meta } = await listStaff({
     search: params.search,
-    status: currentStatus, // <-- This was missing!
+    status: currentStatus,
     page: Number(params.page) || 1,
   });
-
+  console.log(meta);
   return (
     // FIX 2: Adding a key based on params ensures the UI refreshes
     // when you click the filter tabs

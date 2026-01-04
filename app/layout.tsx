@@ -10,7 +10,6 @@ const geistMono = Geist_Mono({
 
 const lexend = Lexend({
   variable: "--font-lexend",
-  subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
 
@@ -26,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${geistMono.variable} ${lexend.variable} antialiased`}>
+      <body
+        className={` ${geistMono.variable} ${lexend.variable} font-sans antialiased`}
+      >
         {children}
         <Toaster position="top-center" />
       </body>
