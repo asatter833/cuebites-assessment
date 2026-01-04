@@ -80,11 +80,11 @@ function SearchInput({ className, ...props }: React.ComponentProps<"input">) {
             nextView && updateQuery({ view: nextView })
           }
         >
-          <ToggleGroupItem value="table-view" className="h-9 w-9 px-0">
-            <LayoutList className="size-4" />
-          </ToggleGroupItem>
           <ToggleGroupItem value="card-view" className="h-9 w-9 px-0">
             <LayoutGrid className="size-4" />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="table-view" className="h-9 w-9 px-0">
+            <LayoutList className="size-4" />
           </ToggleGroupItem>
         </ToggleGroup>
         {/* Status Segmented Control */}

@@ -10,6 +10,7 @@ import { FavoriteToggle } from "../favourite.button";
 import { UpdateStaffDialog } from "../update/update.staff";
 import { gender } from "@/generated/prisma/enums";
 import { DeleteStaffButton } from "../delete.button";
+import { StatusBadge } from "../status.components";
 
 export interface StaffCardProps {
   staff: {
@@ -127,43 +128,14 @@ export function StaffCard({ staff }: StaffCardProps) {
 
         {/* Status */}
         <div className="grid grid-cols-[120px_1fr] items-center">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Circle className="size-4" />
-            <span>Status</span>
-          </div>
           <div className="flex items-center gap-2">
-            {/* 1. Logic to determine colors based on status */}
-            {(() => {
-              const s = staff?.status?.toLowerCase();
-              const config = {
-                active: {
-                  dot: "bg-green-500",
-                  text: "text-green-600",
-                  label: "Active",
-                },
-                inactive: {
-                  dot: "bg-slate-400",
-                  text: "text-slate-500",
-                  label: "Inactive",
-                },
-                terminated: {
-                  dot: "bg-red-500",
-                  text: "text-red-600",
-                  label: "Terminated",
-                },
-              };
-
-              const style = config[s as keyof typeof config] || config.inactive;
-
-              return (
-                <>
-                  <div className={cn("size-2.5 rounded-full", style.dot)} />
-                  <span className={cn("font-bold capitalize", style.text)}>
-                    {style.label}
-                  </span>
-                </>
-              );
-            })()}
+            <div className="grid grid-cols-[120px_1fr] items-center">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Circle className="size-4" />
+                <span>Status</span>
+              </div>
+              <StatusBadge status={staff.status} />
+            </div>
           </div>
         </div>
       </CardContent>

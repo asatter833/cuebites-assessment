@@ -6,7 +6,7 @@ import { staff } from "@/generated/prisma/client";
 import { DeleteStaffButton } from "../delete.button";
 import { UpdateStaffDialog } from "../update/update.staff";
 import { FavoriteToggle } from "../favourite.button";
-import { nationalityToCode } from "@/lib/utils";
+import { cn, nationalityToCode } from "@/lib/utils";
 
 export const columns: ColumnDef<staff>[] = [
   {
@@ -95,14 +95,46 @@ export const columns: ColumnDef<staff>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
+      const status =
+        (row.getValue("status") as string)?.toLowerCase() || "inactive";
+
+      // Define styles mapping
+      const config = {
+        active: {
+          dot: "bg-green-500",
+          text: "text-green-600",
+          bg: "bg-green-50",
+        },
+        inactive: {
+          dot: "bg-slate-400",
+          text: "text-slate-500",
+          bg: "bg-slate-50",
+        },
+        terminated: {
+          dot: "bg-red-500",
+          text: "text-red-600",
+          bg: "bg-red-50",
+        },
+      };
+
+      const style = config[status as keyof typeof config] || config.inactive;
+
       return (
-        <Badge
-          variant={status === "active" ? "default" : "secondary"}
-          className="capitalize"
+        <div
+          className={cn(
+            "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold border shrink-0",
+            style.bg,
+            style.text,
+            status === "active"
+              ? "border-green-200"
+              : status === "terminated"
+              ? "border-red-200"
+              : "border-slate-200"
+          )}
         >
-          {status}
-        </Badge>
+          <div className={cn("size-1.5 rounded-full", style.dot)} />
+          <span className="capitalize">{status}</span>
+        </div>
       );
     },
   },

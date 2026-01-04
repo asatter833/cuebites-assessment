@@ -32,7 +32,7 @@ export default async function listStaff(filters?: {
       skip,
       take: pageSize,
       orderBy: {
-        full_name: "asc",
+        id: "asc",
       },
     });
 

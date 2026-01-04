@@ -294,7 +294,7 @@ export function UpdateStaffDialog({ staff }: UpdateStaffDialogProps) {
                       defaultValue={field.value ?? "active"}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                       </FormControl>
