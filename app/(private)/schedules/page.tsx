@@ -29,7 +29,7 @@ export default async function SchedulesPage({ searchParams }: PageProps) {
     listSchedules({
       pageSize: 500,
     }),
-    prisma.staff.findMany({
+    prisma?.staff?.findMany({
       where: {
         is_active: true,
         ...(searchQuery && {
@@ -65,7 +65,7 @@ export default async function SchedulesPage({ searchParams }: PageProps) {
               Staff:
             </span>
             <span className="text-[11px] font-bold text-slate-600">
-              {allStaff.length} ACTIVE
+              {allStaff?.length} ACTIVE
             </span>
           </div>
           <Separator orientation="vertical" className="h-3 bg-slate-200" />
@@ -74,7 +74,7 @@ export default async function SchedulesPage({ searchParams }: PageProps) {
               Assignments:
             </span>
             <span className="text-[11px] font-bold text-slate-600">
-              {schedulesData.length} TOTAL
+              {schedulesData?.length} TOTAL
             </span>
           </div>
         </div>

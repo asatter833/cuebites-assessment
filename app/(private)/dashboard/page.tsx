@@ -50,26 +50,26 @@ export default async function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Staff"
-          value={data.stats.totalStaff.value}
-          change={data.stats.totalStaff.change}
+          value={data?.stats?.totalStaff?.value}
+          change={data?.stats?.totalStaff?.change}
           icon={<Users className="size-4" />}
-          trend={data.stats.totalStaff.trend}
+          trend={data?.stats?.totalStaff?.trend}
         />
         <StatCard
           title="Active Schedules"
-          value={data.stats.activeSchedules.value}
+          value={data?.stats?.activeSchedules?.value}
           icon={<Calendar className="size-4" />}
         />
         <StatCard
           title="Utilization"
-          value={data.stats.utilization.value}
-          change={data.stats.utilization.change}
+          value={data?.stats?.utilization?.value}
+          change={data?.stats?.utilization?.change}
           icon={<TrendingUp className="size-4" />}
-          trend={data.stats.utilization.trend}
+          trend={data?.stats?.utilization?.trend}
         />
         <StatCard
           title="Pending Tasks"
-          value={data.stats.pendingTasks.value}
+          value={data?.stats?.pendingTasks?.value}
           icon={<Clock className="size-4" />}
         />
       </div>
@@ -101,29 +101,29 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="p-0">
             <div className="divide-y divide-slate-100">
-              {data.recentLogs.map((log) => (
+              {data?.recentLogs?.map((log) => (
                 <div
-                  key={log.id}
+                  key={log?.id}
                   className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div
                       className={cn(
                         "size-1.5 rounded-full",
-                        log.type === "danger" ? "bg-red-500" : "bg-blue-500"
+                        log?.type === "danger" ? "bg-red-500" : "bg-blue-500"
                       )}
                     />
                     <div>
                       <p className="text-xs font-bold text-slate-900">
-                        {log.name}
+                        {log?.name}
                       </p>
                       <p className="text-[11px] text-slate-500 font-medium">
-                        {log.action}
+                        {log?.action}
                       </p>
                     </div>
                   </div>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                    {log.time}
+                    {log?.time}
                   </span>
                 </div>
               ))}
